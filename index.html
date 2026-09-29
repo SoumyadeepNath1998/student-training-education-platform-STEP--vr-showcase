@@ -63,10 +63,10 @@
     <!-- WebVR 3D Scene -->
     <a-scene>
       <a-assets timeout="10000">
-        <!-- Make sure video file is in same folder and named step_demo.mp4 -->
+        <!-- Compressed Video Asset -->
         <video
           id="stepVideo"
-          src="step_demo.mp4"
+          src="step_demo_compressed.mp4"
           preload="auto"
           loop="true"
           crossorigin="anonymous"
@@ -75,7 +75,7 @@
         ></video>
       </a-assets>
 
-      <!-- Curved Virtual Theater Screen -->
+      <!-- Curved Virtual Cinema Screen -->
       <a-curvedimage
         src="#stepVideo"
         radius="6"
@@ -87,9 +87,6 @@
 
       <!-- Ambient Modern Dark 360 Sky -->
       <a-sky color="#0b0f19"></a-sky>
-
-      <!-- Minimal Floor Grid for Depth Perception -->
-      <a-grid-plane></a-grid-plane>
 
       <!-- Camera Controller -->
       <a-entity camera look-controls position="0 1.6 0">
@@ -107,7 +104,6 @@
             overlay.style.display = 'none';
           }).catch((err) => {
             console.log('Video Play Error:', err);
-            // Fallback: try playing muted if audio restriction blocks it
             vid.muted = true;
             vid.play();
             overlay.style.display = 'none';
