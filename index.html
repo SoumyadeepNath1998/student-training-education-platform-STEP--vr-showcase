@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STEP Venture - WebVR Showcase</title>
+
+    <!-- A-Frame VR Library -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <style>
+      /* Play Overlay Button Styling */
+      #playOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(10, 15, 29, 0.85);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffffff;
+        backdrop-filter: blur(8px);
+      }
+
+      .btn-play {
+        padding: 16px 36px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffffff;
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-play:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 28px rgba(124, 58, 237, 0.5);
+      }
+
+      .subtext {
+        margin-top: 14px;
+        font-size: 14px;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Click to Start Overlay (Browser Autoplay Unlocker) -->
+    <div id="playOverlay">
+      <h2 style="margin-bottom: 20px; font-weight: 700; letter-spacing: 1px;">STEP Venture VR Showcase</h2>
+      <button class="btn-play" onclick="startExperience()">Enter Virtual Screen</button>
+      <p class="subtext">Click to start the immersive experience with audio</p>
+    </div>
+
+    <!-- WebVR 3D Scene -->
+    <a-scene>
+      <a-assets timeout="10000">
+        <!-- Make sure video file is in same folder and named step_demo.mp4 -->
+        <video
+          id="stepVideo"
+          src="step_demo.mp4"
+          preload="auto"
+          loop="true"
+          crossorigin="anonymous"
+          playsinline
+          webkit-playsinline
+        ></video>
+      </a-assets>
+
+      <!-- Curved Virtual Theater Screen -->
+      <a-curvedimage
+        src="#stepVideo"
+        radius="6"
+        theta-length="75"
+        height="3.6"
+        position="0 1.6 -3.8"
+        rotation="0 142.5 0"
+      ></a-curvedimage>
+
+      <!-- Ambient Modern Dark 360 Sky -->
+      <a-sky color="#0b0f19"></a-sky>
+
+      <!-- Minimal Floor Grid for Depth Perception -->
+      <a-grid-plane></a-grid-plane>
+
+      <!-- Camera Controller -->
+      <a-entity camera look-controls position="0 1.6 0">
+        <a-cursor color="#38bdf8" fuse="false"></a-cursor>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      function startExperience() {
+        const vid = document.getElementById('stepVideo');
+        const overlay = document.getElementById('playOverlay');
+
+        if (vid) {
+          vid.play().then(() => {
+            overlay.style.display = 'none';
+          }).catch((err) => {
+            console.log('Video Play Error:', err);
+            // Fallback: try playing muted if audio restriction blocks it
+            vid.muted = true;
+            vid.play();
+            overlay.style.display = 'none';
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
